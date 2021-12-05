@@ -1,31 +1,26 @@
-let range = 30
-
 bluetooth.onBluetoothConnected(function () {
     basic.showIcon(IconNames.Yes)
 })
 bluetooth.onBluetoothDisconnected(function () {
     basic.showIcon(IconNames.No)
 })
-// Initial head direction
-function resetHeading () {
-    neutralBearing = input.compassHeading()
-}
-// Calculate delta
-function calculateDelta (neutralBearing: number, currentHeading: number) {
-    let delta = neutralBearing - currentHeading
-
-    return delta
-}
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    resetHeading()
+input.onGesture(Gesture.TiltLeft, function () {
+    bluetooth.uartWriteLine("LEFT:")
 })
-
-let leftLimitBearing = 0
-let rightLimitBearing = 0
-let neutralBearing = 0
+input.onGesture(Gesture.Shake, function () {
+    bluetooth.uartWriteLine("SHAKE:")
+})
+input.onGesture(Gesture.TiltRight, function () {
+    bluetooth.uartWriteLine("RIGHT:")
+})
+let pitch = 0
+let roll = 0
+bluetooth.startButtonService()
 bluetooth.startUartService()
-neutralBearing = input.compassHeading()
+loops.everyInterval(500, function () {
+    bluetooth.uartWriteLine(`R:${pitch}:${roll}`)
+})
 basic.forever(function () {
-    let delta = calculateDelta(neutralBearing, input.compassHeading())
-    bluetooth.uartWriteNumber(delta)
+    pitch = input.rotation(Rotation.Pitch)
+    roll = input.rotation(Rotation.Roll)
 })
