@@ -2,8 +2,8 @@
     "name": "ibis-client-v1",
     "dependencies": {
         "core": "*",
-        "radio": "*",
-        "microphone": "*"
+        "microphone": "*",
+        "bluetooth": "*"
     },
     "files": [
         "main.blocks",
@@ -20,5 +20,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }
